@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "skill": {
+      "*": "allow"
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-ee53cd66-0f6a-41e6-8f45-ff90e7329fc6"
+      },
+      "enabled": true
+    },
+    "task-master-ai": {
+      "type": "local",
+      "command": ["npx", "-y", "task-master-ai"],
+      "environment": {
+        "TASK_MASTER_TOOLS": "core"
+      },
+      "enabled": true
+    }
+  }
+}
