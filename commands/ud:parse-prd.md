@@ -1,11 +1,14 @@
 ---
-description: Parse a PRD file into Task Master tasks
+description: Parse PRD into Taskmaster tasks using parse-prd skill
 ---
 
 # Parse PRD
 
-Parse a Product Requirements Document into Task Master tasks.
+Parse a Product Requirements Document into Taskmaster tasks.
 
-Run: `task-master parse-prd $ARGUMENTS`
+Use the `parse-prd` skill to read the PRD and generate tasks directly into `.taskmaster/tasks/tasks.json`.
 
-If $ARGUMENTS is empty, look for a PRD file in `.taskmaster/docs/` and use it. If multiple files exist, ask the user which one to parse.
+Do NOT use the Taskmaster MCP `parse_prd` tool or `task-master parse-prd` CLI command.
+Instead, follow the instructions in the `parse-prd` skill.
+
+If $ARGUMENTS contains a file path, pass it to the skill. Otherwise, the skill will search `.taskmaster/docs/` automatically.
