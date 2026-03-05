@@ -1,11 +1,13 @@
 ---
-description: Generate a PRD using the prd-taskmaster skill, reading input from INPUT.md
+description: Generate a PRD from PROJECT.md using the generate-prd skill
 ---
 
 # Generate PRD
 
-Use the **prd-taskmaster** skill to generate a Product Requirements Document.
+Use the **generate-prd** skill to create a Product Requirements Document from PROJECT.md.
 
-Check if `.claude/docs/INPUT.md` exists and has content. If it does, use it as the input for PRD generation.
-If `INPUT.md` is empty or missing, and $ARGUMENTS is provided, use that instead.
-If neither exists, ask the user what feature or product they want a PRD for.
+The skill reads PROJECT.md for project context, checks existing PRDs in `.taskmaster/docs/`
+to determine what's already covered, and generates a focused PRD for the next phase.
+
+Do NOT use the prd-taskmaster skill, INPUT.md, or $ARGUMENTS.
+PROJECT.md is the single source of truth for PRD generation.
