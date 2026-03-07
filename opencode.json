@@ -21,6 +21,11 @@
         "TASK_MASTER_TOOLS": "core"
       },
       "enabled": true
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "@playwright/mcp@latest"],
+      "enabled": true
     }
   }
 }
