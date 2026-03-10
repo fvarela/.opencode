@@ -5,6 +5,41 @@
       "*": "allow"
     }
   },
+  "agent": {
+    "planner": {
+      "mode": "primary",
+      "description": "Project planning and architecture. Edits PROJECT.md, INSTRUCTIONS.md, and PRDs. Does not write code.",
+      "tools": {
+        "edit": true,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "list": true,
+        "bash": true,
+        "write": true,
+        "webfetch": true,
+        "task": true,
+        "todowrite": true,
+        "todoread": true,
+        "skill": true
+      },
+      "permission": {
+        "edit": {
+          "PROJECT.md": "allow",
+          "CLAUDE.md": "allow",
+          ".claude/docs/*.md": "allow",
+          ".taskmaster/docs/*": "allow",
+          "*": "deny"
+        },
+        "bash": {
+          "ls *": "allow",
+          "cat *": "allow",
+          "task-master *": "allow",
+          "*": "deny"
+        }
+      }
+    }
+  },
   "mcp": {
     "context7": {
       "type": "remote",
