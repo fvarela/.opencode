@@ -1,7 +1,7 @@
 ---
-description: Read and process contents of .claude/docs/input.md
+description: Load .claude/docs/INPUT.md into the conversation
 ---
 
 # Process Input
 
-Read `.claude/docs/input.md` and process its contents.
+Read `.claude/docs/INPUT.md` and process its contents.
