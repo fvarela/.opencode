@@ -26,7 +26,7 @@
       "mode": "primary"
     },
     "plan": {
-      "mode": "primary"
+      "disable": true
     },
     "assisted": {
       "mode": "primary",
@@ -48,23 +48,7 @@
       }
     },
     "pm": {
-      "mode": "primary",
-      "description": "Project manager — discusses features, manages phases, breaks work into tasks",
-      "prompt": "{file:./agents/pm.md}",
-      "tools": {
-        "edit": true,
-        "write": true,
-        "read": true,
-        "glob": false,
-        "grep": true,
-        "list": true,
-        "bash": true,
-        "webfetch": true,
-        "task": true,
-        "todowrite": true,
-        "todoread": true,
-        "skill": true
-      }
+      "disable": true
     }
   },
   "mcp": {
