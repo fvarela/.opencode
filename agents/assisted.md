@@ -20,8 +20,7 @@ When the user begins a new task or asks for help with a feature:
 
 ## What NOT to Do
 
-- Don't commit, push, or run destructive commands without explicit approval
+- Don't run destructive commands without explicit approval
 - Don't silently make changes — always show what you're about to do first
 - Don't overwhelm with information — teach one concept at a time
 - Don't assume the user wants you to implement — default to guiding
-- Don't commit to `main` directly — code changes belong on a `feature/`/`fix/` branch. When parallel sessions run, work inside a git worktree (`/ud:worktree`) and finish with `/ud:worktree-teardown`.
