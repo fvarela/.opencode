@@ -1,49 +1,130 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "github-copilot/claude-sonnet-5.5",
+  "provider": {
+    "github-copilot": {
+      "models": {
+        "gpt-5.6-luna": {
+          "options": {
+            "reasoningEffort": "max"
+          }
+        },
+        "gpt-6-luna": {
+          "options": {
+            "reasoningEffort": "max"
+          }
+        }
+      }
+    },
+    "casa": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Servidor de casa",
+      "options": {
+        "baseURL": "http://192.168.1.148:1234/v1"
+      },
+      "models": {
+        "google/gemma-4-26b-a4b-qat": {
+          "name": "Gemma 4 26B (local)",
+          "tool_call": true,
+          "limit": {
+            "context": 32768,
+            "output": 8192
+          }
+        }
+      }
+    }
+  },
   "permission": {
-    "skill": {
-      "*": "allow"
+    "bash": {
+      "*": "allow",
+      "az *": "ask",
+      "databricks *permissions *": "ask",
+      "databricks *grants *": "ask",
+      "databricks *secrets *": "ask",
+      "databricks *service-principals *": "ask",
+      "databricks *tokens *": "ask"
     }
   },
   "agent": {
-    "planner": {
+    "build": {
+      "mode": "primary"
+    },
+    "explore": {
+      "model": "github-copilot/claude-sonnet-5.5"
+    },
+    "plan": {
+      "disable": true
+    },
+    "assisted": {
       "mode": "primary",
-      "description": "Thinking partner for project planning. CORE RULE: When you receive input, extract topics → add to '## Ongoing Topics' in PROJECT.md → present them → ask which to discuss. That's it. Do NOT offer to update PROJECT.md sections or generate PRDs — the next step is always discussion. Document decisions only after the user explicitly confirms them. On entry, check Ongoing Topics for open threads. Does not write code.",
+      "description": "Senior dev guiding you through implementation — you write the code",
+      "prompt": "{file:./agents/assisted.md}",
       "tools": {
         "edit": true,
         "write": true,
         "read": true,
-        "glob": true,
+        "glob": false,
         "grep": true,
         "list": true,
         "bash": true,
         "webfetch": true,
         "task": true,
-        "todowrite": true,
-        "todoread": true,
-        "skill": true
-      },
+        "todowrite": true
+      }
+    },
+    "project-planner": {
+      "description": "Plans work in this repository and writes prompts for the coding agent, which you run with /run. Reads only AGENTS.md and keeps it up to date.",
+      "mode": "primary",
+      "model": "github-copilot/claude-opus-5.5",
+      "prompt": "{file:./prompts/project-planner.md}",
       "permission": {
+        "*": "deny",
+        "read": {
+          "*": "deny",
+          "AGENTS.md": "allow",
+          "**/AGENTS.md": "allow",
+          ".agents/plan/*": "allow",
+          "**/.agents/plan/*": "allow"
+        },
         "edit": {
-          "PROJECT.md": "allow",
-          "CLAUDE.md": "allow",
-          ".claude/docs/*.md": "allow",
-          ".taskmaster/docs/*": "allow",
-          "*": "deny"
+          "*": "deny",
+          "AGENTS.md": "allow",
+          "**/AGENTS.md": "allow",
+          ".agents/plan/prompt.md": "allow",
+          "**/.agents/plan/prompt.md": "allow"
         },
-        "write": {
-          "PROJECT.md": "allow",
-          "CLAUDE.md": "allow",
-          ".claude/docs/*.md": "allow",
-          ".taskmaster/docs/*": "allow",
-          "*": "deny"
+        "task": {
+          "*": "deny",
+          "explore": "allow"
         },
-        "bash": {
-          "ls *": "allow",
-          "cat *": "allow",
-          "task-master *": "allow",
-          "*": "deny"
-        }
+        "question": "allow",
+        "todowrite": "allow"
+      }
+    },
+    "project-planner-auto": {
+      "description": "Like project-planner, but hands each prompt to the coder subagent after your approval and gets the report back automatically.",
+      "mode": "primary",
+      "model": "github-copilot/claude-opus-5.5",
+      "prompt": "{file:./prompts/project-planner.md}",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "deny",
+          "AGENTS.md": "allow",
+          "**/AGENTS.md": "allow"
+        },
+        "edit": {
+          "*": "deny",
+          "AGENTS.md": "allow",
+          "**/AGENTS.md": "allow"
+        },
+        "task": {
+          "*": "deny",
+          "explore": "allow",
+          "coder": "ask"
+        },
+        "question": "allow",
+        "todowrite": "allow"
       }
     }
   },
@@ -52,22 +133,32 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "ctx7sk-ee53cd66-0f6a-41e6-8f45-ff90e7329fc6"
-      },
-      "enabled": true
-    },
-    "task-master-ai": {
-      "type": "local",
-      "command": ["npx", "-y", "task-master-ai"],
-      "environment": {
-        "TASK_MASTER_TOOLS": "core"
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       },
       "enabled": true
     },
     "playwright": {
       "type": "local",
-      "command": ["npx", "@playwright/mcp@latest", "--executable-path", "/home/fvarela/.cache/ms-playwright/chromium-1208/chrome-linux64/chrome"],
-      "enabled": true
+      "command": [
+        "npx",
+        "-y",
+        "@playwright/mcp@latest",
+        "--browser",
+        "chromium",
+        "--caps",
+        "vision,pdf",
+        "--save-session"
+      ],
+      "environment": {
+        "PLAYWRIGHT_MCP_IMAGE_RESPONSES": "allow",
+        "PLAYWRIGHT_MCP_SNAPSHOT_MODE": "full"
+      },
+      "enabled": false
+    },
+    "obsidian-vault": {
+      "type": "remote",
+      "url": "http://127.0.0.1:27124/mcp",
+      "enabled": false
     }
   }
 }
